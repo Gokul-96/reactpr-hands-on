@@ -1,90 +1,144 @@
-//Task6
-//Use button in one component
-//state should in App component only
-//statics are in one component
-//and staticlines are in one component
-
-import { useState } from 'react'
-
-import React from 'react'
+//Task7
+// Create Table
 
 
+import { useState } from "react";
 
-
-function StaticsLine({text,value}) {
+function Tablebutton({ good, neutral, bad }) {
   return (
     <div>
-<p>{text}{value}</p>
+      <table>
+        <tr>
+          <th>good</th>
+          <th>neutral</th>
+          <th>bad</th>
+        </tr>
+        <tr>
+          <td>{good}</td>
+          <td>{neutral}</td>
+          <td>{bad}</td>
+        </tr>
+      </table>
     </div>
   )
 }
 
-function Statics({good,neutral, bad }) {
+function Tablestatistics({ good, neutral, bad, all }) {
   return (
     <div>
-    <h1>statics</h1>
-            <StaticsLine text='good' value ={good} />
-            
-            <StaticsLine text='neutral' value ={neutral} />
-            
-            <StaticsLine text='bad' value ={bad} />
-
-            
-            <StaticsLine text='all' value ={good + neutral + bad} />
-            <StaticsLine text='average' value ={(good + neutral + bad)/3}/>
-            <StaticsLine text='positivity' value ={(good/(good + neutral + bad))*100 + '%'}/>
-       
-    
-        </div>
+      <table>
+        <tr>
+          <th>good</th>
+          <td>{good}</td>
+        </tr>
+        <tr>
+          <th>neutral</th>
+          <td>{neutral}</td>
+        </tr>
+        <tr>
+          <th>bad</th>
+          <td>{bad}</td>
+        </tr>
+        <tr>
+          <th>all</th>
+          <td>{all}</td>
+        </tr>
+        <tr>
+          <th>average</th>
+          <td>{all / 3}</td>
+        </tr>
+        <tr>
+          <th>percentage</th>
+          <td>{all !== 0 ? ((good / all) * 100) + "%" : 0 + "%"}</td>
+        </tr>
+      </table>
+    </div>
   )
 }
 
 
-
-function Button({handleClick, text}) {
+function Buttons({ text, value }) {
   return (
-    <div>
-     <button onClick={handleClick}>{text}</button>
-
-      </div>
-
-    
+    <button onClick={value}>{text}</button>
   )
 }
 
 
+function Button({ good, Setgood, Setbad, bad, Setneutral, neutral }) {
+  return (
+    <div>
+      <Buttons text="good" value={() => Setgood(good + 1)} />
+      <Buttons text="neutral" value={() => Setneutral(neutral + 1)} />
+      <Buttons text="bad" value={() => Setbad(bad + 1)} />
+    </div>
 
-     
+  )
+}
+
+
+function Statisticsline({ text, value }) {
+  return (
+    <p>{text} {value}</p>
+  )
+}
+
+function Statistics({ good, neutral, bad, all }) {
+  return (
+    <div>
+      <Statisticsline text="good" value={good} />
+      <Statisticsline text="neutral" value={neutral} />
+      <Statisticsline text="bad" value={bad} />
+      <Statisticsline text="all" value={all} />
+      <Statisticsline text="average" value={all / 3} />
+      <Statisticsline text="positive" value={all !== 0 ? ((good / all) * 100) + "%" : 0 + "%"} />
+
+    </div>
+
+  )
+
+}
 function App() {
 
-  const [good, setGood] = useState(0);
-  const [neutral, setNeutral] = useState(0);
-  const [bad, setBad] = useState(0);
+  const [good, Setgood] = useState(0);
+
+  const [neutral, Setneutral] = useState(0);
+
+  const [bad, Setbad] = useState(0);
+
+
+  let all = good + bad + neutral;
+
+  let average = (all / 3);
+
+  let percentage = ((good / all) * 100)
 
 
 
 
   return (
-    <div>
+    <div className="App">
       <div>
-        <h1>Give feedback</h1>
-        <Button handleClick={()=> setGood(good+1)} text='good' />
-        <Button handleClick={()=> setNeutral(neutral+1)} text='neutral' />
-        <Button handleClick={()=> setBad(bad+1)} text='bad' />
+        <h1>give feedback</h1>
+        <Button good={good} Setgood={Setgood} neutral={neutral} Setneutral={Setneutral} bad={bad} Setbad={Setbad} />
+        <Tablebutton good={good} neutral={neutral} bad={bad} />
+      </div>
+
+      <div>
+        <h1>statistics</h1>
+        <Statistics good={good} bad={bad} neutral={neutral} all={all} />
+        <Tablestatistics good={good} neutral={neutral} bad={bad} all={all} />
 
       </div>
 
 
-      <div>
-        <Statics good={good} neutral={neutral} bad={bad} />
-       
 
-      </div>
+
+
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
 
 
 
